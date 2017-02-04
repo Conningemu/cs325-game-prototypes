@@ -21,8 +21,8 @@ window.onload = function() {
 		game.load.image( 'sky', 'assets/sky.png');
 		game.load.image( 'ground', 'assets/ground.png');
 		game.load.image( 'ground2', 'assets/ground2.png');
-		game.load.image( 'bullet', 'assets/bullet.png');
-		game.load.image( 'target', 'assets/target.png');
+		game.load.image( 'bullet', 'assets/Bullet.png');
+		game.load.image( 'target', 'assets/Target.png');
 		game.load.image( 'targetC', 'assets/TargetCenter.png');
     }
     
