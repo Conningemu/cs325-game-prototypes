@@ -21,8 +21,8 @@ window.onload = function() {
 		game.load.image( 'sky', 'assets/sky.png');
 		game.load.image( 'ground', 'assets/ground.png');
 		game.load.image( 'ground2', 'assets/ground2.png');
-		game.load.image( 'bullet', 'assets/Bullet.png');
-		game.load.image( 'target', 'assets/Target.png');
+		game.load.image( 'bullet', 'assets/bullet.png');
+		game.load.image( 'target', 'assets/target.png');
 		game.load.image( 'targetC', 'assets/TargetCenter.png');
     }
     
@@ -31,17 +31,25 @@ window.onload = function() {
 	
 	var target;
 	var targetC;
+	
+	var bullets;
+	var fireRate = 500;
+	var nextFire = 0;
     
     function create() {
+		
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		
         // Create a sprite at the center of the screen using the 'logo' image.
 		game.add.sprite(0, 0, 'sky');
 		game.add.sprite(0, 500, 'ground');
-		game.add.sprite(100, 100, 'bullet');
 		
+		//The ground that is physical
 		ground = game.add.sprite(0, 532, 'ground2');
 		game.physics.enable( ground, Phaser.Physics.ARCADE);
 		ground.body.immovable = true;
 		
+		//The Target Icon 
 		target = game.add.sprite(0, 0,'target');
 		game.physics.enable(target, Phaser.Physics.ARCADE);
 		target.anchor.setTo( 0.5, 0.5 );
@@ -49,6 +57,16 @@ window.onload = function() {
 		game.physics.enable(targetC, Phaser.Physics.ARCADE);
 		targetC.anchor.setTo( 0.5, 0.5 );
 		
+		//Bullet
+		bullets = game.add.group();
+		bullets.enableBody = true;
+		bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+		bullets.createMultiple(50, 'bullet');
+		bullets.setAll('checkWorldBounds', true);
+		bullets.setAll('outOfBoundsKill', true);
+		
+		//this is actually the cowboy that i just repurposed
         bouncy = game.add.sprite( 200, 500, 'logo' );
         bouncy.anchor.setTo( 0.5, 0.5 );
 
@@ -61,17 +79,18 @@ window.onload = function() {
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
         var style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-        var text = game.add.text( game.world.centerX, 15, "I'm Trying", style );
+        var text = game.add.text( game.world.centerX, 15, "I'm Trying!!?", style );
         text.anchor.setTo( 0.5, 0.0 );
     }
     
     function update() {
-        // Accelerate the 'logo' sprite towards the cursor,
-        // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
-        // in X or Y.
-        // This function returns the rotation angle that makes it visually match its
-        // new trajectory.
+		//Shoots gun
+		if (game.input.activePointer.isDown)
+		{
+			shoot();
+		}
 		
+		//Target Movement towards the mouse for aiming
 		game.physics.arcade.moveToPointer(target, 800);
 		game.physics.arcade.moveToPointer(targetC, 800);
 		if (Phaser.Rectangle.contains(targetC.body, game.input.x, game.input.y))
@@ -83,4 +102,19 @@ window.onload = function() {
 		var hitPlatform = game.physics.arcade.collide(bouncy, ground);
         //bouncy.rotation = game.physics.arcade.accelerateToPointer( bouncy, this.game.input.activePointer, 500, 500, 500 );
     }
+	
+	function shoot() {
+
+		if (game.time.now > nextFire && bullets.countDead() > 0)
+		{
+			nextFire = game.time.now + fireRate;
+
+			var bullet = bullets.getFirstDead();
+
+			bullet.reset(bouncy.x - 8, bouncy.y - 8);
+
+			game.physics.arcade.moveToPointer(bullet, 300);
+		}
+
+	}
 };
