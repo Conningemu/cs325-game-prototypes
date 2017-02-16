@@ -46,10 +46,10 @@ BasicGame.Game.prototype = {
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
         
-        Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
+        /*Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
 		this.game.scale.pageAlignHorizontally = true;
 		this.game.scale.pageAlignVertically = true
-		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;*/
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		this.game.stage.backgroundColor = '#C2DFFF';
