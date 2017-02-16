@@ -181,6 +181,7 @@ BasicGame.Game.prototype = {
 				this.score += 20;
 				this.scoreText.text = this.scoreString + this.score;
 				player.kill();
+				this.score = 0;
 				this.state.start('MainMenu');
 			}
 			
