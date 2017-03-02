@@ -52,7 +52,7 @@ BasicGame.Game.prototype = {
         
         // When you click on the sprite, you go back to the MainMenu.
         this.bouncy.inputEnabled = true;
-        this.bouncy.events.onInputDown.add( function() { this.state.start('MainMenu'); }, this );
+        this.bouncy.events.onInputDown.add( this.quitGame() );
     },
 
     update: function () {
