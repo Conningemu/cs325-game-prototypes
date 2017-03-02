@@ -175,7 +175,7 @@ window.onload = function() {
 			actionPlayed = false;
 			
 			//Combat
-			
+			/*
 			for(var i = 0; i < sword.length; i++)
 			{
 				for(var j = 0; j < sword1.length; j++)
@@ -327,7 +327,7 @@ window.onload = function() {
 					i--;
 				}
 			}
-		
+		*/
 		}
 		//if(deckPool.forEach.input.pointerOver())
     }
