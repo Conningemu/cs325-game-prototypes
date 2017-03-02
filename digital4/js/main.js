@@ -7,9 +7,9 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         game.load.image( 'board', 'assets/board.png' );
-		game.load.image('baseS', 'assets/cards/BaseTestSword.png');
-		game.load.image('baseB', 'assets/cards/BaseTestBow.png');
-		game.load.image('baseC', 'assets/cards/BaseTestCat.png');
+		game.load.image('baseS', 'assets/Cards/BaseTestSword.png');
+		game.load.image('baseB', 'assets/Cards/BaseTestBow.png');
+		game.load.image('baseC', 'assets/Cards/BaseTestCat.png');
     }
 	
 	var deck = [];
@@ -180,61 +180,79 @@ window.onload = function() {
 			{
 				for(var j = 0; j < sword1.length; j++)
 				{	
-					hold = sword[i].str;
-					//console.log(sword[i].str);
-					hold1 = sword1[j].str;
-					sword[i].str = sword[i].str - hold1;
-					//console.log(sword[i].str);
-					sword1[j].str = sword1[j].str - hold;
+					if(sword[i].str > 0 && sword1[j].str > 0) 
+					{
+						hold = sword[i].str;
+						//console.log(sword[i].str);
+						hold1 = sword1[j].str;
+						sword[i].str = sword[i].str - hold1;
+						//console.log(sword[i].str);
+						sword1[j].str = sword1[j].str - hold;
+					}
 					if(sword[i].str < 0) sword[i].str = 0;
 					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
-					hold = sword[i].str/2;
-					hold1 = bow1[j].str * 2;
-					sword[i].str = sword[i].str - hold1;
-					console.log(sword[i].str + " Bow str: " + bow1[j].str);
-					bow1[j].str = bow1[j].str - hold;
-					if(sword[i].str < 0) sword[i].str = 0;
-					if(bow1[j].str < 0) bow1[j].str = 0;
+					if(sword[i].str > 0 && bow1[j].str > 0) 
+					{
+						hold = sword[i].str/2;
+						hold1 = bow1[j].str * 2;
+						sword[i].str = sword[i].str - hold1;
+						console.log(sword[i].str + " Bow str: " + bow1[j].str);
+						bow1[j].str = bow1[j].str - hold;
+					}
+						if(sword[i].str < 0) sword[i].str = 0;
+						if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
-					hold = sword[i].str * 2;
-					hold1 = cat1[j].str/2;
-					sword[i].str = sword[i].str - hold1;
-					cat1[j].str = cat1[j].str - hold;
-					if(sword[i].str < 0) sword[i].str = 0;
-					if(cat1[j].str < 0) cat1[j].str = 0;
+					if(sword[i].str > 0 && cat1[j].str > 0) 
+					{
+						hold = sword[i].str * 2;
+						hold1 = cat1[j].str/2;
+						sword[i].str = sword[i].str - hold1;
+						cat1[j].str = cat1[j].str - hold;
+					}
+						if(sword[i].str < 0) sword[i].str = 0;
+						if(cat1[j].str < 0) cat1[j].str = 0;
 				}
 			}
 			for(var i = 0; i < bow.length; i++)
 			{
 				for(var j = 0; j < sword1.length; j++)
 				{
-					hold = bow[i].str * 2;
-					hold1 = sword1[j].str/2;
-					bow[i].str = bow[i].str - hold1;
-					sword1[j].str = sword1[j].str - hold;
+					if(bow[i].str > 0 && sword1[j].str > 0) 
+					{
+						hold = bow[i].str * 2;
+						hold1 = sword1[j].str/2;
+						bow[i].str = bow[i].str - hold1;
+						sword1[j].str = sword1[j].str - hold;
+					}
 					if(bow[i].str < 0) bow[i].str = 0;
 					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
-					hold = bow[i].str;
-					hold1 = bow1[j].str;
-					bow[i].str = bow[i].str - hold1;
-					bow1[j].str = bow1[j].str - hold;
+					if(bow[i].str > 0 && bow1[j].str > 0) 
+					{
+						hold = bow[i].str;
+						hold1 = bow1[j].str;
+						bow[i].str = bow[i].str - hold1;
+						bow1[j].str = bow1[j].str - hold;
+					}
 					if(bow[i].str < 0) bow[i].str = 0;
 					if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
-					hold = bow[i].str/2;
-					hold1 = cat1[j].str * 2;
-					bow[i].str = bow[i].str - hold1;
-					cat1[j].str = cat1[j].str - hold;
+					if(bow[i].str > 0 && cat1[j].str > 0) 
+					{
+						hold = bow[i].str/2;
+						hold1 = cat1[j].str * 2;
+						bow[i].str = bow[i].str - hold1;
+						cat1[j].str = cat1[j].str - hold;
+					}
 					if(bow[i].str < 0) bow[i].str = 0;
 					if(cat1[j].str < 0) cat1[j].str = 0;
 				}
@@ -243,28 +261,37 @@ window.onload = function() {
 			{
 				for(var j = 0; j < sword1.length; j++)
 				{
-					hold = cat[i].str / 2;
-					hold1 = sword1[j].str * 2;
-					cat[i].str = cat[i].str - hold1;
-					sword1[j].str = sword1[j].str - hold;
+					if(cat[i].str > 0 && sword1[j].str > 0) 
+					{
+						hold = cat[i].str / 2;
+						hold1 = sword1[j].str * 2;
+						cat[i].str = cat[i].str - hold1;
+						sword1[j].str = sword1[j].str - hold;
+					}
 					if(cat[i].str < 0) cat[i].str = 0;
 					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
-					hold = cat[i].str * 2;
-					hold1 = bow1[j].str/2;
-					cat[i].str = cat[i].str - hold1;
-					bow1[j].str = bow1[j].str - hold;
+					if(cat[i].str > 0 && bow1[j].str > 0) 
+					{
+						hold = cat[i].str * 2;
+						hold1 = bow1[j].str/2;
+						cat[i].str = cat[i].str - hold1;
+						bow1[j].str = bow1[j].str - hold;
+					}
 					if(cat[i].str < 0) cat[i].str = 0;
 					if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
-					hold = cat[i].str * 2;
-					hold1 = cat1[j].str/2;
-					cat[i].str = cat[i].str - hold1;
-					cat1[j].str = cat1[j].str - hold;
+					if(cat[i].str > 0 && cat1[j].str > 0) 
+					{
+						hold = cat[i].str * 2;
+						hold1 = cat1[j].str/2;
+						cat[i].str = cat[i].str - hold1;
+						cat1[j].str = cat1[j].str - hold;
+					}
 					if(cat[i].str < 0) cat[i].str = 0;
 					if(cat1[j].str < 0) cat1[j].str = 0;
 				}
@@ -273,7 +300,7 @@ window.onload = function() {
 			
 			for(var i = 0; i < sword.length; i++)
 			{
-				if(sword[i] == 0)
+				if(sword[i].str == 0)
 				{	
 					sword[i].kill();3-
 					sword.splice(i,1);
@@ -282,7 +309,7 @@ window.onload = function() {
 			}
 			for(var i = 0; i < bow.length; i++)
 			{
-				if(bow[i] == 0)
+				if(bow[i].str == 0)
 				{	
 					bow[i].kill();
 					bow.splice(i,1);
@@ -291,7 +318,7 @@ window.onload = function() {
 			}
 			for(var i = 0; i < sword1.length; i++)
 			{
-				if(sword1[i] == 0)
+				if(sword1[i].str == 0)
 				{	
 					sword1[i].kill();
 					sword1.splice(i,1);
@@ -300,7 +327,7 @@ window.onload = function() {
 			}
 			for(var i = 0; i < bow1.length; i++)
 			{
-				if(bow1[i] == 0)
+				if(bow1[i].str == 0)
 				{	
 					bow1[i].kill();
 					bow1.splice(i,1);
@@ -309,7 +336,7 @@ window.onload = function() {
 			}
 			for(var i = 0; i < cat.length; i++)
 			{
-				if(cat[i] == 0)
+				if(cat[i].str == 0)
 				{	
 					console.log("Does it go here?");
 					cat[i].kill();
@@ -319,7 +346,7 @@ window.onload = function() {
 			}
 			for(var i = 0; i < cat1.length; i++)
 			{
-				if(cat1[i] == 0)
+				if(cat1[i].str == 0)
 				{	
 					console.log("Go here?");
 					cat1[i].kill();
