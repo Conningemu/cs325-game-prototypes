@@ -175,7 +175,7 @@ window.onload = function() {
 			actionPlayed = false;
 			
 			//Combat
-			/*
+			
 			for(var i = 0; i < sword.length; i++)
 			{
 				for(var j = 0; j < sword1.length; j++)
@@ -185,28 +185,28 @@ window.onload = function() {
 					hold1 = sword1[j].str;
 					sword[i].str = sword[i].str - hold1;
 					//console.log(sword[i].str);
-					sword1[i].str = sword1[i].str - hold;
+					sword1[j].str = sword1[j].str - hold;
 					if(sword[i].str < 0) sword[i].str = 0;
-					if(sword1[i].str < 0) sword1[i].str = 0;
+					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
 					hold = sword[i].str/2;
 					hold1 = bow1[j].str * 2;
 					sword[i].str = sword[i].str - hold1;
-					console.log(sword[i].str);
-					bow1[i].str = bow1[i].str - hold;
+					console.log(sword[i].str + " Bow str: " + bow1[j].str);
+					bow1[j].str = bow1[j].str - hold;
 					if(sword[i].str < 0) sword[i].str = 0;
-					if(bow1[i].str < 0) bow1[i].str = 0;
+					if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
 					hold = sword[i].str * 2;
 					hold1 = cat1[j].str/2;
 					sword[i].str = sword[i].str - hold1;
-					cat1[i].str = cat1[i].str - hold;
+					cat1[j].str = cat1[j].str - hold;
 					if(sword[i].str < 0) sword[i].str = 0;
-					if(cat1[i].str < 0) cat1[i].str = 0;
+					if(cat1[j].str < 0) cat1[j].str = 0;
 				}
 			}
 			for(var i = 0; i < bow.length; i++)
@@ -216,27 +216,27 @@ window.onload = function() {
 					hold = bow[i].str * 2;
 					hold1 = sword1[j].str/2;
 					bow[i].str = bow[i].str - hold1;
-					sword1[i].str = sword1[i].str - hold;
+					sword1[j].str = sword1[j].str - hold;
 					if(bow[i].str < 0) bow[i].str = 0;
-					if(sword1[i].str < 0) sword1[i].str = 0;
+					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
 					hold = bow[i].str;
 					hold1 = bow1[j].str;
 					bow[i].str = bow[i].str - hold1;
-					bow1[i].str = bow1[i].str - hold;
+					bow1[j].str = bow1[j].str - hold;
 					if(bow[i].str < 0) bow[i].str = 0;
-					if(bow1[i].str < 0) bow1[i].str = 0;
+					if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
 					hold = bow[i].str/2;
 					hold1 = cat1[j].str * 2;
 					bow[i].str = bow[i].str - hold1;
-					cat1[i].str = cat1[i].str - hold;
+					cat1[j].str = cat1[j].str - hold;
 					if(bow[i].str < 0) bow[i].str = 0;
-					if(cat1[i].str < 0) cat1[i].str = 0;
+					if(cat1[j].str < 0) cat1[j].str = 0;
 				}
 			}
 			for(var i = 0; i < cat.length; i++)
@@ -246,27 +246,27 @@ window.onload = function() {
 					hold = cat[i].str / 2;
 					hold1 = sword1[j].str * 2;
 					cat[i].str = cat[i].str - hold1;
-					sword1[i].str = sword1[i].str - hold;
+					sword1[j].str = sword1[j].str - hold;
 					if(cat[i].str < 0) cat[i].str = 0;
-					if(sword1[i].str < 0) sword1[i].str = 0;
+					if(sword1[j].str < 0) sword1[j].str = 0;
 				}
 				for(var j = 0; j < bow1.length; j++)
 				{
 					hold = cat[i].str * 2;
 					hold1 = bow1[j].str/2;
 					cat[i].str = cat[i].str - hold1;
-					bow1[i].str = bow1[i].str - hold;
+					bow1[j].str = bow1[j].str - hold;
 					if(cat[i].str < 0) cat[i].str = 0;
-					if(bow1[i].str < 0) bow1[i].str = 0;
+					if(bow1[j].str < 0) bow1[j].str = 0;
 				}
 				for(var j = 0; j < cat1.length; j++)
 				{
 					hold = cat[i].str * 2;
 					hold1 = cat1[j].str/2;
 					cat[i].str = cat[i].str - hold1;
-					cat1[i].str = cat1[i].str - hold;
+					cat1[j].str = cat1[j].str - hold;
 					if(cat[i].str < 0) cat[i].str = 0;
-					if(cat1[i].str < 0) cat1[i].str = 0;
+					if(cat1[j].str < 0) cat1[j].str = 0;
 				}
 			}
 			//kills dead cards
@@ -275,7 +275,7 @@ window.onload = function() {
 			{
 				if(sword[i] == 0)
 				{	
-					sword[i].kill();
+					sword[i].kill();3-
 					sword.splice(i,1);
 					i--;
 				}
@@ -327,7 +327,6 @@ window.onload = function() {
 					i--;
 				}
 			}
-		*/
 		}
 		//if(deckPool.forEach.input.pointerOver())
     }
