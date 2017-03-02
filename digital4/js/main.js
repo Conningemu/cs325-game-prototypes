@@ -7,9 +7,9 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         game.load.image( 'board', 'assets/board.png' );
-		game.load.image('baseS', 'assets/Cards/BaseTestSword.png');
-		game.load.image('baseB', 'assets/Cards/BaseTestBow.png');
-		game.load.image('baseC', 'assets/Cards/BaseTestCat.png');
+		game.load.image('baseS', 'assets/cards/BaseTestSword.png');
+		game.load.image('baseB', 'assets/cards/BaseTestBow.png');
+		game.load.image('baseC', 'assets/cards/BaseTestCat.png');
     }
 	
 	var deck = [];
