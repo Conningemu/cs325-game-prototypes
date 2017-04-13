@@ -180,7 +180,7 @@ window.onload = function() {
 		//rotate(one);
 		if(four.count == 1 || four.count == 4)
 		{
-			if(five.count == 1 || four.count == 3 || four.count == 4)
+			if(five.count == 1 || five.count == 3 || five.count == 4)
 			{
 				if(one.count == 1 && two.count == 1 && three.count == 1 && six.count == 1 && seven.count == 1 && eight.count == 1)
 				{
