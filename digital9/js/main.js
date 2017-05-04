@@ -1,0 +1,279 @@
+var GameState = function(game) {
+};
+
+// Load images and sounds
+GameState.prototype.preload = function() {
+    this.game.load.image('ground', 'assets/ground.png');
+    this.game.load.image('player', 'assets/player.png');
+	this.game.load.image('player2', 'assets/player2.png');
+	this.game.load.image('player3', 'assets/player3.png');
+	this.game.load.image('light', 'assets/light.png');
+	this.game.load.image('safezone', 'assets/safezone.png');
+	this.game.load.image('not1', 'assets/notsafe1.png');
+	this.game.load.image('not2', 'assets/notsafe2.png');
+	this.game.load.image('bloc', 'assets/bloc.png');
+	this.game.load.image('lose', 'assets/loser.png' );
+	this.game.load.image('win', 'assets/winner.png' );
+};
+
+// Setup the example
+GameState.prototype.create = function() {
+    // Set stage background to something sky colored
+    this.game.stage.backgroundColor = 0x444444;
+
+    // Define movement constants
+    this.MAX_SPEED = 200; // pixels/second
+    this.ACCELERATION = 1500; // pixels/second/second
+    this.DRAG = 2000; // pixels/second
+    this.GRAVITY = 2600; // pixels/second/second
+    this.JUMP_SPEED = -750; // pixels/second (negative y is up)
+	// Define transformation constants
+	this.changeRate = 500;
+	this.nextChange = 0;
+	
+	this.bloc = this.game.add.sprite(0, 0, 'bloc');
+
+    // Since we're jumping we need gravity
+    game.physics.arcade.gravity.y = this.GRAVITY;
+
+    // Create some ground for the player to walk on
+    this.ground = this.game.add.group();
+    for(var x = 0; x < this.game.width; x += 32) {
+        // Add the ground blocks, enable physics on each, make them immovable
+        var groundBlock = this.game.add.sprite(x, this.game.height - 32, 'ground');
+        this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
+        groundBlock.body.immovable = true;
+        groundBlock.body.allowGravity = false;
+        this.ground.add(groundBlock);
+    }
+	
+	this.light = this.game.add.sprite(this.game.width-50, this.game.height - 40, 'light');
+	this.light.anchor.setTo(.5);
+	this.light.scale.x = -1;
+	this.light.fliped = true;
+	
+	this.game.physics.enable(this.light, Phaser.Physics.ARCADE);
+	this.light.body.immovable = true;
+    this.light.body.allowGravity = false;
+	
+	this.timer = game.time.create(false);
+	this.timer.loop(4000, this.flipLight, this);
+	this.timer.start();
+	
+	//safezone
+	this.safezone = this.game.add.sprite(this.game.width/2, this.game.height - (62.5+32), 'safezone');
+	this.safezone.anchor.setTo(0.5,0);
+	this.safezone.scale.setTo(0.5,0.5);
+	
+	//other pieces
+	this.not1 = this.game.add.sprite(this.game.width/2 - 300, this.game.height - (62.5+32), 'not1');
+	this.not1.anchor.setTo(0.5,0);
+	this.not1.scale.setTo(0.5,0.5);
+	
+	this.not2 = this.game.add.sprite(this.game.width/2 + 200, this.game.height - (62.5+32), 'not2');
+	this.not2.anchor.setTo(0.5,0);
+	this.not2.scale.setTo(0.5,0.5);
+	
+	 // Create a player sprite
+    this.player = this.game.add.sprite(10, this.game.height - 64, 'player');
+    this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+    this.player.body.collideWorldBounds = true;
+    this.player.body.maxVelocity.setTo(this.MAX_SPEED, this.MAX_SPEED * 10); // x, y
+    this.player.body.drag.setTo(this.DRAG, 0); // x, y
+	this.player.invisible = true;
+	this.player.phase = 1;
+	
+
+    this.game.input.keyboard.addKeyCapture([
+        Phaser.Keyboard.LEFT,
+        Phaser.Keyboard.RIGHT,
+        Phaser.Keyboard.UP,
+        Phaser.Keyboard.DOWN,
+		Phaser.Keyboard.SPACEBAR
+    ]);
+
+};
+
+GameState.prototype.flipLight = function() {
+	if (this.light.fliped == true)
+	{
+		this.light.fliped = false;
+		this.light.scale.x = this.light.scale.x * -1;
+	}
+	else if (this.light.fliped == false)
+	{
+		this.light.fliped = true;
+		this.light.scale.x = this.light.scale.x * -1;
+	}
+};
+
+// This function draws horizontal lines across the stage
+GameState.prototype.drawHeightMarkers = function() {
+    // Create a bitmap the same size as the stage
+    var bitmap = this.game.add.bitmapData(this.game.width, this.game.height);
+
+    // These functions use the canvas context to draw lines using the canvas API
+    for(y = this.game.height-32; y >= 64; y -= 32) {
+        bitmap.context.beginPath();
+        bitmap.context.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        bitmap.context.moveTo(0, y);
+        bitmap.context.lineTo(this.game.width, y);
+        bitmap.context.stroke();
+    }
+
+    this.game.add.image(0, 0, bitmap);
+};
+
+// The update() method is called every frame
+GameState.prototype.update = function() {
+    // Collide the player with the ground
+    this.game.physics.arcade.collide(this.player, this.ground);
+	//this.game.physics.arcade.collide(this.player, this.light);
+	
+	//Returns the character to normal if not stealthed
+	this.player.alpha= 1.0;
+	this.player.invisible = true;
+	
+	if(this.downInputIsActive()){
+		this.player.body.acceleration.x = 0;
+		if(this.player.overlap(this.safezone) && this.player.phase == 1)
+		{
+			this.player.invisible = false;
+			this.player.alpha = 0.2;
+		}
+		else if(this.player.overlap(this.bloc))
+		{
+			this.player.invisible = false;
+			this.player.alpha = 0.2;
+		}
+		else if(this.player.overlap(this.not1)&& this.player.phase == 3)
+		{
+			this.player.invisible = false;
+			this.player.alpha = 0.2;
+		}
+		else if(this.player.overlap(this.not2)&& this.player.phase == 2)
+		{
+			this.player.invisible = false;
+			this.player.alpha = 0.2;
+		}
+		
+
+	}
+    else if (this.leftInputIsActive()) {
+        // If the LEFT key is down, set the player velocity to move left
+        this.player.body.acceleration.x = -this.ACCELERATION;
+    } else if (this.rightInputIsActive()) {
+        // If the RIGHT key is down, set the player velocity to move right
+        this.player.body.acceleration.x = this.ACCELERATION;
+    } else {
+        this.player.body.acceleration.x = 0;
+    }
+	
+	if(this.spaceInputIsActive()){
+		if (this.game.time.now > this.nextChange)
+		{
+			this.nextChange = this.game.time.now + this.changeRate;
+			if(this.player.phase == 1)
+			{
+				this.player.phase = 2;
+				this.player.loadTexture('player2',0);
+			}
+			else if(this.player.phase == 2)
+			{
+				this.player.phase = 3;
+				this.player.loadTexture('player3',0);
+			}
+			else if(this.player.phase == 3)
+			{
+				this.player.phase = 1;
+				this.player.loadTexture('player',0);
+			}
+		}
+	}
+
+    // Set a variable that is true when the player is touching the ground
+    var onTheGround = this.player.body.touching.down;
+
+    if (onTheGround && this.upInputIsActive()) {
+        // Jump when the player is touching the ground and the up arrow is pressed
+        this.player.body.velocity.y = this.JUMP_SPEED;
+    }
+	
+	if(this.player.overlap(this.light))
+	{
+		var geh2 = this.game.add.sprite(this.game.width/2, this.game.height/2, 'win');
+		geh2.anchor.setTo(0.5,0.5);
+		this.game.gamePaused();
+	}
+	if(this.light.fliped == false)
+	{
+		if(this.player.invisible == true)
+		{
+			if(this.player.x > 140)
+			{
+				var geh = this.game.add.sprite(this.game.width/2, this.game.height/2, 'lose');
+				geh.anchor.setTo(0.5,0.5);
+				this.game.gamePaused();
+			}
+		}
+	}
+};
+
+// This function should return true when the player activates the "go left" control
+// In this case, either holding the right arrow or tapping or clicking on the left
+// side of the screen.
+GameState.prototype.leftInputIsActive = function() {
+    var isActive = false;
+
+    isActive = this.input.keyboard.isDown(Phaser.Keyboard.LEFT);
+    isActive |= (this.game.input.activePointer.isDown &&
+        this.game.input.activePointer.x < this.game.width/4);
+
+    return isActive;
+};
+
+GameState.prototype.spaceInputIsActive = function() {
+	var isActive = false;
+
+    isActive = this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR);
+
+    return isActive;
+};
+
+GameState.prototype.downInputIsActive = function() {
+    var isActive = false;
+
+    isActive = this.input.keyboard.isDown(Phaser.Keyboard.DOWN);
+
+    return isActive;
+};
+
+// This function should return true when the player activates the "go right" control
+// In this case, either holding the right arrow or tapping or clicking on the right
+// side of the screen.
+GameState.prototype.rightInputIsActive = function() {
+    var isActive = false;
+
+    isActive = this.input.keyboard.isDown(Phaser.Keyboard.RIGHT);
+    isActive |= (this.game.input.activePointer.isDown &&
+        this.game.input.activePointer.x > this.game.width/2 + this.game.width/4);
+
+    return isActive;
+};
+
+// This function should return true when the player activates the "jump" control
+// In this case, either holding the up arrow or tapping or clicking on the center
+// part of the screen.
+GameState.prototype.upInputIsActive = function(duration) {
+    var isActive = false;
+
+    isActive = this.input.keyboard.downDuration(Phaser.Keyboard.UP, duration);
+    isActive |= (this.game.input.activePointer.justPressed(duration + 1000/60) &&
+        this.game.input.activePointer.x > this.game.width/4 &&
+        this.game.input.activePointer.x < this.game.width/2 + this.game.width/4);
+
+    return isActive;
+};
+
+var game = new Phaser.Game(1600, 450, Phaser.AUTO, 'game');
+game.state.add('game', GameState, true);
